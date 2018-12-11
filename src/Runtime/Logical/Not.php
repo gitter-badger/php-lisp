@@ -12,15 +12,14 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace PhpLisp\Psp\Runtime;
+namespace PhpLisp\Psp\Runtime\Logical;
 
-use PhpLisp\Psp\ApplicableInterface;
-use PhpLisp\Psp\Scope;
+use PhpLisp\Psp\Runtime\BuiltinFunction;
 
-final class Macro implements ApplicableInterface
+class Not extends BuiltinFunction
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function execute(array $arguments)
     {
-        return new UserMacro($scope, $arguments);
+        return !$arguments[0];
     }
 }

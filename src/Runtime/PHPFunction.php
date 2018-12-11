@@ -14,13 +14,20 @@
  */
 namespace PhpLisp\Psp\Runtime;
 
-use PhpLisp\Psp\ApplicableInterface;
-use PhpLisp\Psp\Scope;
-
-final class Macro implements ApplicableInterface
+final class PHPFunction extends \PhpLisp\Psp\Runtime\PspFunction
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public $callback;
+
+    public function __construct($callback)
     {
-        return new UserMacro($scope, $arguments);
+        if (!is_callable($callback)) {
+            throw new \UnexpectedValueException('undefined function or method');
+        }
+        $this->callback = $callback;
+    }
+
+    public function execute(array $arguments)
+    {
+        return call_user_func_array($this->callback, $arguments);
     }
 }

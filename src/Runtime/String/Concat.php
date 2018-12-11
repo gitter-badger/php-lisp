@@ -12,15 +12,17 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace PhpLisp\Psp\Runtime;
+namespace PhpLisp\Psp\Runtime\String;
 
-use PhpLisp\Psp\ApplicableInterface;
-use PhpLisp\Psp\Scope;
+use PhpLisp\Psp\Runtime\BuiltinFunction;
 
-final class Macro implements ApplicableInterface
+final class Concat extends BuiltinFunction
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function execute(array $arguments)
     {
-        return new UserMacro($scope, $arguments);
+        if (isset($arguments[0])) {
+            return join('', $arguments);
+        }
+        throw new \InvalidArgumentException('too few strings');
     }
 }

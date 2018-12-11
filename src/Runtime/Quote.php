@@ -15,12 +15,13 @@
 namespace PhpLisp\Psp\Runtime;
 
 use PhpLisp\Psp\ApplicableInterface;
+use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Scope;
 
-final class Macro implements ApplicableInterface
+final class Quote implements ApplicableInterface
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function apply(Scope $scope, PspList $arguments)
     {
-        return new UserMacro($scope, $arguments);
+        return $arguments[0];
     }
 }

@@ -15,12 +15,23 @@
 namespace PhpLisp\Psp\Runtime;
 
 use PhpLisp\Psp\ApplicableInterface;
+use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Scope;
+use PhpLisp\Psp\Symbol;
 
-final class Macro implements ApplicableInterface
+final class Setf implements ApplicableInterface
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function apply(Scope $scope, PspList $arguments)
     {
-        return new UserMacro($scope, $arguments);
+        $name = $arguments[0];
+        if ($name instanceof Symbol) {
+            $retval = $arguments[1]->evaluate($scope);
+        } else {
+            throw new InvalidArgumentException(
+                'first operand of setf! form must be symbol'
+            );
+        }
+
+        return $scope[$name] = $retval;
     }
 }

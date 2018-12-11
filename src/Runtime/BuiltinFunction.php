@@ -14,13 +14,9 @@
  */
 namespace PhpLisp\Psp\Runtime;
 
-use PhpLisp\Psp\ApplicableInterface;
-use PhpLisp\Psp\Scope;
-
-final class Macro implements ApplicableInterface
+abstract class BuiltinFunction extends PspFunction
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function __construct()
     {
-        return new UserMacro($scope, $arguments);
     }
 }

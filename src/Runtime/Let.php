@@ -17,10 +17,20 @@ namespace PhpLisp\Psp\Runtime;
 use PhpLisp\Psp\ApplicableInterface;
 use PhpLisp\Psp\Scope;
 
-final class Macro implements ApplicableInterface
+final class Let implements ApplicableInterface
 {
     public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
     {
-        return new UserMacro($scope, $arguments);
+        $vars = $arguments->car();
+        $scope = new Scope($scope);
+        foreach ($vars as $var) {
+            list($var, $value) = $var;
+            $scope->let($var, $value->evaluate($scope->superscope));
+        }
+        foreach ($arguments->cdr() as $form) {
+            $retval = $form->evaluate($scope);
+        }
+
+        return $retval;
     }
 }

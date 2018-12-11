@@ -15,12 +15,22 @@
 namespace PhpLisp\Psp\Runtime;
 
 use PhpLisp\Psp\ApplicableInterface;
+use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Scope;
 
-final class Macro implements ApplicableInterface
+final class Lambda implements ApplicableInterface
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function apply(Scope $scope, PspList $arguments)
     {
-        return new UserMacro($scope, $arguments);
+        if (count($arguments) < 2) {
+            $msg = 'parameter list and body form are required';
+            throw new \InvalidArgumentException($msg);
+        }
+
+        return new PspFunction(
+            $scope,
+            $arguments->car(),
+            $arguments->cdr()
+        );
     }
 }

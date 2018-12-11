@@ -12,15 +12,17 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace PhpLisp\Psp\Runtime;
+namespace PhpLisp\Psp\Runtime\Logical;
 
 use PhpLisp\Psp\ApplicableInterface;
+use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Scope;
 
-final class Macro implements ApplicableInterface
+final class PspIf implements ApplicableInterface
 {
-    public function apply(Scope $scope, \PhpLisp\Psp\PspList $arguments)
+    public function apply(Scope $scope, PspList $args)
     {
-        return new UserMacro($scope, $arguments);
+        $index = $args[0]->evaluate($scope) ? 1 : 2;
+        return isset($args[$index]) ? $args[$index]->evaluate($scope) : null;
     }
 }
