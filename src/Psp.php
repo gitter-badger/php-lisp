@@ -15,9 +15,6 @@
 
 namespace PhpLisp\Psp;
 
-use PhpLisp\Psp\Exceptions\BadMethodCallException;
-
 class Psp implements \IteratorAggregate, \ArrayAccess, \Countable
 {
-
 }
