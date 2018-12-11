@@ -18,7 +18,7 @@ use PhpLisp\Psp\Environment;
 use PhpLisp\Psp\Psp;
 use PhpLisp\Psp\Runtime\PHPFunction;
 
-class Lisphp_FunctionalTest extends TestCase
+class FunctionalTest extends TestCase
 {
     private $result;
 
