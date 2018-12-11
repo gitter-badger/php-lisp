@@ -18,7 +18,9 @@ namespace PhpLisp\Psp\Exceptions;
 class ParsingException extends Exception
 {
     public $code;
+
     public $offset;
+
     public $lisphpFile;
 
     public function __construct($code, $offset, $file = '')

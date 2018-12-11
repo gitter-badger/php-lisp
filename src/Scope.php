@@ -18,6 +18,7 @@ namespace PhpLisp\Psp;
 final class Scope implements \ArrayAccess, \IteratorAggregate
 {
     public $values = [];
+
     public $superscope;
 
     public function __construct(self $superscope = null)

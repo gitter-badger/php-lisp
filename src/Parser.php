@@ -162,8 +162,7 @@ final class Parser
             return chr(hexdec($matches[3]));
         } elseif (isset($map[$matches[1]])) {
             return $map[$matches[1]];
-        } else {
-            return $matches[1];
         }
+        return $matches[1];
     }
 }

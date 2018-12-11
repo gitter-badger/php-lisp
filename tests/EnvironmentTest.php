@@ -16,7 +16,6 @@
 namespace PhpLisp\Psp\Tests;
 
 use PhpLisp\Psp\Environment;
-use PhpLisp\Psp\Runtime\From;
 use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Runtime\Apply;
 use PhpLisp\Psp\Runtime\Arithmetic\Addition;
@@ -26,6 +25,7 @@ use PhpLisp\Psp\Runtime\Arithmetic\Multiplication;
 use PhpLisp\Psp\Runtime\Arithmetic\Subtraction;
 use PhpLisp\Psp\Runtime\Define;
 use PhpLisp\Psp\Runtime\Dict;
+use PhpLisp\Psp\Runtime\From;
 use PhpLisp\Psp\Runtime\Lambda;
 use PhpLisp\Psp\Runtime\Let;
 use PhpLisp\Psp\Runtime\Logical\Not;
@@ -79,13 +79,13 @@ class EnvironmentTest extends TestCase
         $this->assertInstanceOf(Quote::class, $scope['quote']);
         $this->assertInstanceOf(PHPFunction::class, $scope['symbol']);
 
-/*        $this->assertEquals(
+        /*        $this->assertEquals(
 
-            function (){
-              Symbol::get('');
-            },
-            $scope['symbol']->callback
-        );*/
+                    function (){
+                      Symbol::get('');
+                    },
+                    $scope['symbol']->callback
+                );*/
         $this->assertInstanceOf(Define::class, $scope['define']);
         $this->assertInstanceOf(Let::class, $scope['let']);
         $this->assertInstanceOf(Macro::class, $scope['macro']);
