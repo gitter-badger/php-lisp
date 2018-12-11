@@ -15,6 +15,7 @@
 
 namespace PhpLisp\Psp;
 
-class Form
+interface Form
 {
+    public function evaluate(Scope $scope);
 }

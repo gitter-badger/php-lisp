@@ -15,6 +15,41 @@
 
 namespace PhpLisp\Psp;
 
-class Literal
+class Literal implements Form
 {
+    public $value;
+
+    public function __construct($value)
+    {
+        if (!in_array(gettype($value), ['integer', 'double', 'string'])) {
+            $msg = 'it accepts only numbers or strings';
+            throw new \UnexpectedValueException($msg);
+        }
+        $this->value = $value;
+    }
+
+    public function evaluate(Scope $scope)
+    {
+        return $this->value;
+    }
+
+    public function isInteger()
+    {
+        return is_int($this->value);
+    }
+
+    public function isReal()
+    {
+        return is_float($this->value);
+    }
+
+    public function isString()
+    {
+        return is_string($this->value);
+    }
+
+    public function __toString()
+    {
+        return (string)var_export($this->value, true);
+    }
 }

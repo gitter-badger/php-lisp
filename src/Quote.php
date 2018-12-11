@@ -15,6 +15,22 @@
 
 namespace PhpLisp\Psp;
 
-class Quote
+class Quote implements Form
 {
+    public $form;
+
+    public function __construct(Form $form)
+    {
+        $this->form = $form;
+    }
+
+    public function evaluate(Scope $scope)
+    {
+        return $this->form;
+    }
+
+    public function __toString()
+    {
+        return ':' . $this->form->__toString();
+    }
 }

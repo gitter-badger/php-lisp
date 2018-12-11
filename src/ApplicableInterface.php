@@ -17,4 +17,5 @@ namespace PhpLisp\Psp;
 
 interface ApplicableInterface
 {
+    public function apply(Scope $scope, PspList $arguments);
 }

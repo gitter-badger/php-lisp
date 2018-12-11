@@ -15,6 +15,56 @@
 
 namespace PhpLisp\Psp;
 
-class PspList
+use PhpLisp\Psp\Exceptions\InvalidApplicationException;
+
+class PspList extends \ArrayObject implements Form
 {
+    public function evaluate(Scope $scope)
+    {
+        $function = $this->car()->evaluate($scope);
+        $applicable = $function instanceof ApplicableInterface;
+        if (is_callable($function) && is_object($function)) {
+            $parameters = [];
+            foreach ($this->cdr() as $arg) {
+                $parameters[] = $arg->evaluate($scope);
+            }
+
+            try {
+                return call_user_func_array($function, $parameters);
+            } catch (\Exception $e) {
+                throw new \Exception('Exception evaluating ' . $this->__toString(), 0, $e);
+            }
+        }
+        if ($applicable) {
+            return $function->apply($scope, $this->cdr());
+        }
+        throw new InvalidApplicationException($function, $this);
+    }
+
+    public function car()
+    {
+        return isset($this[0]) ? $this[0] : null;
+    }
+
+    public function cdr()
+    {
+        if (!isset($this[0])) {
+            return;
+        }
+
+        return new self(array_slice($this->getArrayCopy(), 1));
+    }
+
+    public function __toString()
+    {
+        foreach ($this as $form) {
+            if ($form instanceof Form) {
+                $strs[] = $form->__toString();
+            } else {
+                $strs[] = '...';
+            }
+        }
+
+        return '(' . join(' ', $strs) . ')';
+    }
 }
