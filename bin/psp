@@ -1,0 +1,127 @@
+#!/usr/bin/env php
+<?php
+
+if (!file_exists(__DIR__.'/../vendor/autoload.php')) {
+    die('You must set up the project dependencies, run the following commands:'.PHP_EOL.
+        'curl -s http://getcomposer.org/installer | php'.PHP_EOL.
+        'php composer.phar install'.PHP_EOL);
+}
+
+include_once  __DIR__.'/../vendor/autoload.php';
+
+define('PSP_VERSION', '1.0.1');
+define('PSP_COLUMN', 80);
+define('PSP_REPL_PROMPT', '>>> ');
+define('PSP_REPL_VALUE_PROMPT', '==> ');
+define('PSP_REPL_EXCEPTION_PROMPT', '!!! ');
+
+function PSP_usage() {
+    static $commands = array(
+        '-c <code>' => 'Evaluate the code.',
+        '-h' => 'Print this help message.',
+        '-s' => 'Safe sandbox mode.',
+        '-v' => 'Print the PSP version number.'
+    );
+    $cmdlen = max(array_map('strlen', array_keys($commands)));
+    $helplen = PSP_COLUMN - $cmdlen - 3;
+    $usage = '';
+    foreach ($commands as $cmd => $help) {
+        preg_match_all("/.{0,{$helplen}}/", $help, $lines);
+        $usage .= sprintf("  %-{$cmdlen}s %s", $cmd, join("\n", $lines[0]));
+    }
+    return $usage;
+}
+
+function PSP_printParsingError(\PhpLisp\Psp\Exceptions\ParsingException $e) {
+    echo $e->getMessage(), "\n";
+    $lines = explode("\n", $e->code);
+    echo $lines[$e->getPSPLine() - 1], "\n";
+    echo str_repeat(' ', $e->getPSPColumn() - 1), "^\n";
+}
+
+$options = getopt('hvsc:');
+if (isset($options['h']) || isset($options['v'])) {
+    echo 'PSP ' . PSP_VERSION . "\n";
+    if (isset($options['v'])) {
+        echo 'PHP-', PHP_VERSION, "\n", php_uname(), "\n";
+    }
+    if (isset($options['h'])) {
+        echo "Usage: {$_SERVER['argv'][0]} [options] <file>\n\n";
+        echo PSP_usage(), "\n";
+    }
+    exit;
+}
+
+$environment = isset($options['s'])
+    ? \PhpLisp\Psp\Environment::sandbox()
+    : \PhpLisp\Psp\Environment::full();
+
+$scope = new \PhpLisp\Psp\Scope($environment);
+$scope['echo'] = new \PhpLisp\Psp\Runtime\PHPFunction(function () {
+    $args = func_get_args();
+    foreach ($args as $arg) echo $arg;
+});
+
+
+try {
+    $file = end($_SERVER['argv']);
+    if (isset($options['c'])) {
+        $program = new \PhpLisp\Psp\Psp($options['c']);
+    } else if (count($_SERVER['argv']) > 1 && $file != '-s') {
+        $program = \PhpLisp\Psp\Psp::load($file);
+    } else {
+        throw new \PhpLisp\Psp\Exceptions\EnterREPLException();
+    }
+    $program->execute($scope);
+} catch (\PhpLisp\Psp\Exceptions\ParsingException $e) {
+    PSP_printParsingError($e);
+} catch (\PhpLisp\Psp\Exceptions\EnterREPLException $e) {
+    $scope['exit'] = new \PhpLisp\Psp\Runtime\PHPFunction(
+        function ($status = null) {
+            if (is_null($status)) die;
+            else die($status);
+        }
+    );
+    if (extension_loaded('readline')) {
+        readline_completion_function(function ($line) use ($scope) {
+            $symbols = array();
+            foreach ($scope->listSymbols() as $symbol) {
+                if ($line != "" && strpos($symbol, $line) !== 0) continue;
+                $symbols[] = $symbol;
+            }
+            if (!isset($symbols[0])) {
+                $symbols[] = $line;
+            }
+            return $symbols;
+        });
+        $readline = 'readline';
+        $add_history = 'readline_add_history';
+        $exit = false;
+    } else {
+        $readline = function ($prompt) {
+            echo $prompt;
+            return fread(STDIN, 8192);
+        };
+        $add_history = function () {};
+        $exit = '';
+    }
+    while (true) {
+        $code = $readline(PSP_REPL_PROMPT);
+        if ($code === $exit) die("\n");
+        else if (trim($code) == '') continue;
+        try {
+            $form = \PhpLisp\Psp\Parser::parseForm($code, $_);
+            echo PSP_REPL_VALUE_PROMPT;
+            var_export($form->evaluate($scope));
+            echo "\n";
+        } catch (\PhpLisp\Psp\Exceptions\ParsingException $e) {
+            PSP_printParsingError($e);
+        } catch (Exception $e) {
+            echo PSP_REPL_EXCEPTION_PROMPT, $e->getMessage(), "\n",
+            preg_replace('/^|\n/', '\\0    ', $e->getTraceAsString()),
+            "\n";
+        }
+        $add_history($code);
+    }
+}
+

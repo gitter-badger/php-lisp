@@ -32,14 +32,12 @@
     "test": [
       "./vendor/bin/phpunit"
     ],
-    "bin": [
-      "bin/desmond"
-    ],
     "fix": [
       "./vendor/bin/php-cs-fixer fix $1"
     ],
     "lint": [
       "./vendor/bin/phplint"
     ]
-  }
+  },
+  "bin": ["bin/psp"]
 }
