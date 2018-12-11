@@ -1,0 +1,40 @@
+<?php declare(strict_types=1);
+/**
+ * This file is part of the php-lisp/php-lisp.
+ *
+ * @Link     https://github.com/php-lisp/php-lisp
+ * @Document https://github.com/php-lisp/php-lisp/blob/master/README.md
+ * @Contact  itwujunze@gmail.com
+ * @License  https://github.com/php-lisp/php-lisp/blob/master/LICENSE
+ *
+ * (c) Panda <itwujunze@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+namespace PhpLisp\Psp\Runtime\PspList;
+
+use PhpLisp\Psp\Runtime\BuiltinFunction;
+
+final class Car extends BuiltinFunction
+{
+    public function execute(array $arguments)
+    {
+        list($list) = $arguments;
+        if ($list instanceof \Iterator) {
+            $list->rewind();
+            $value = $list->valid() ? $list->current() : null;
+        } elseif ($list instanceof \IteratorAggregate) {
+            $iter = $list->getIterator();
+            $value = $iter->valid() ? $iter->current() : null;
+        } elseif (is_array($list) || $list instanceof \ArrayAccess) {
+            $value = isset($list[0]) ? $list[0] : null;
+        } else {
+            throw new \InvalidArgumentException('expected a list');
+        }
+        if (!is_null($value)) {
+            return $value;
+        }
+        throw new \UnexpectedValueException('list is empty');
+    }
+}
