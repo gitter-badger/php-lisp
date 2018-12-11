@@ -12,8 +12,12 @@
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace PhpLisp\Psp\Runtime;
 
-class Macro
+namespace PhpLisp\Psp;
+
+use PhpLisp\Psp\Exceptions\BadMethodCallException;
+
+class Psp implements \IteratorAggregate, \ArrayAccess, \Countable
 {
+
 }
