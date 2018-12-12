@@ -14,7 +14,6 @@
  */
 namespace PhpLisp\Psp\Runtime\PspList;
 
-use PhpLisp\Psp\Psp;
 use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Runtime\BuiltinFunction;
 use PhpLisp\Psp\Runtime\PspFunction;

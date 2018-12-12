@@ -14,6 +14,8 @@
  */
 namespace PhpLisp\Psp\Tests;
 
+use \BadMethodCallException;
+use \Exception;
 use PhpLisp\Psp\Exceptions\ParsingException;
 use PhpLisp\Psp\Psp;
 use PhpLisp\Psp\PspList;
@@ -23,8 +25,6 @@ use PhpLisp\Psp\Runtime\Define;
 use PhpLisp\Psp\Runtime\Lambda;
 use PhpLisp\Psp\Runtime\PspFunction;
 use PhpLisp\Psp\Scope;
-use \BadMethodCallException;
-use \Exception;
 
 class ProgramTest extends TestCase
 {

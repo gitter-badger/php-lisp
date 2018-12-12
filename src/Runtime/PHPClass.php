@@ -14,8 +14,6 @@
  */
 namespace PhpLisp\Psp\Runtime;
 
-use ReflectionClass;
-
 final class PHPClass extends PspFunction
 {
     public $class;
