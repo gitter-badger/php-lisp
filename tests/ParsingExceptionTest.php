@@ -1,0 +1,55 @@
+<?php declare(strict_types=1);
+/**
+ * This file is part of the php-lisp/php-lisp.
+ *
+ * @Link     https://github.com/php-lisp/php-lisp
+ * @Document https://github.com/php-lisp/php-lisp/blob/master/README.md
+ * @Contact  itwujunze@gmail.com
+ * @License  https://github.com/php-lisp/php-lisp/blob/master/LICENSE
+ *
+ * (c) Panda <itwujunze@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+namespace PhpLisp\Psp\Tests;
+
+use PhpLisp\Psp\Exceptions\ParsingException;
+
+class ParsingExceptionTest extends TestCase
+{
+    /**
+     * @var ParsingException
+     */
+    private $exception;
+
+    public function setUp()
+    {
+        $this->exception = new ParsingException('
+            (use substr)
+            (echo (substr "test" 1 2)}
+            (echo "yes")
+        ', 63, 'test.lisphp');
+    }
+
+    public function testLine()
+    {
+        $this->assertSame(3, $this->exception->getLisphpLine());
+        $e = new ParsingException('{', 0);
+        $this->assertSame(1, $e->getLisphpLine());
+    }
+
+    public function testColumn()
+    {
+        $this->assertSame(38, $this->exception->getLisphpColumn());
+        $e = new ParsingException('{', 0);
+        $this->assertSame(1, $e->getLisphpColumn());
+    }
+
+    public function testFile()
+    {
+        $this->assertSame('test.lisphp', $this->exception->getLisphpFile());
+        $e = new ParsingException('(echo 1', 7);
+        $this->assertSame('', $e->getLisphpFile());
+    }
+}

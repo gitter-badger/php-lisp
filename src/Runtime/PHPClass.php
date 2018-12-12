@@ -23,9 +23,9 @@ final class PHPClass extends PspFunction
     public function __construct($class)
     {
         try {
-            $this->class = new ReflectionClass($class);
-        } catch (ReflectionException $e) {
-            throw new UnexpectedValueException($e);
+            $this->class = new \ReflectionClass($class);
+        } catch (\ReflectionException $e) {
+            throw new \UnexpectedValueException($e->getMessage());
         }
     }
 

@@ -15,7 +15,6 @@
 
 namespace PhpLisp\Psp\Tests;
 
-use http\Exception\UnexpectedValueException;
 use PhpLisp\Psp\Literal;
 use PhpLisp\Psp\Scope;
 

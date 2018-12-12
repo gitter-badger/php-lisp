@@ -35,7 +35,7 @@ class PspFunction implements ApplicableInterface
         } elseif (is_callable($func) && is_object($func)) {
             return call_user_func_array($func, $args);
         }
-        throw new InvalidArgumentException('expected callable value');
+        throw new \InvalidArgumentException('expected callable value');
     }
 
     public function __construct(
@@ -71,7 +71,7 @@ class PspFunction implements ApplicableInterface
         $local = new Scope($this->scope);
         foreach ($this->parameters as $i => $name) {
             if (!array_key_exists($i, $arguments)) {
-                throw new InvalidArgumentException('too few arguments');
+                throw new \InvalidArgumentException('too few arguments');
             }
             $local->let($name, $arguments[$i]);
         }

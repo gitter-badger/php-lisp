@@ -15,6 +15,7 @@
 namespace PhpLisp\Psp\Runtime\PspList;
 
 use PhpLisp\Psp\Psp;
+use PhpLisp\Psp\PspList;
 use PhpLisp\Psp\Runtime\BuiltinFunction;
 use PhpLisp\Psp\Runtime\PspFunction;
 
@@ -50,6 +51,6 @@ final class Map extends BuiltinFunction
             $map[] = PspFunction::call($function, $values);
         }
 
-        return new Psp($map);
+        return new PspList($map);
     }
 }

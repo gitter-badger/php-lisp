@@ -14,6 +14,8 @@
  */
 namespace PhpLisp\Psp\Runtime;
 
+use \InvalidArgumentException;
+
 abstract class ComparingPredicate extends BuiltinFunction
 {
     protected $logicalOr = false;

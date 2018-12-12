@@ -28,7 +28,7 @@ final class From implements ApplicableInterface
         $ns = (string) $arguments->car();
         $simpleNames = iterator_to_array($arguments[1]);
         foreach ($simpleNames as $name) {
-            $name = substr($name, 1, -1);
+            $name = substr($name->symbol, 1, -1);
             $names[] = Symbol::get("<$ns\\$name>");
         }
         $retval = $use->apply($tmp, new PspList($names));

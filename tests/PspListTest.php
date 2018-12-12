@@ -81,7 +81,7 @@ class PspListTest extends TestCase
 
     public function testCdr()
     {
-        $this->assertSame(
+        $this->assertEquals(
             new PspList([
                 Symbol::get('pi'),
                 new Literal(3.14),

@@ -63,8 +63,8 @@ final class PspUse implements ApplicableInterface
             }
 
             return [$name => new PHPFunction($phpname)];
-        } catch (UnexpectedValueException $e) {
-            throw new InvalidArgumentException($e);
+        } catch (\UnexpectedValueException $e) {
+            throw new \InvalidArgumentException($e->getMessage());
         }
     }
 }
