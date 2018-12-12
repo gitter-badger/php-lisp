@@ -8,8 +8,12 @@ filter:
 build:
   tests:
     override:
-    -
-      command: ./vendor/bin/phpunit --coverage-clover=clover.xml
+    - command: ./vendor/bin/phpunit --coverage-clover=clover.xml
       coverage:
         file: clover.xml
         format: php-clover
+  nodes:
+    analysis:
+      tests:
+        override:
+        - php-scrutinizer-run
