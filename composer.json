@@ -30,7 +30,7 @@
   },
   "scripts": {
     "test-html": [
-      "./vendor/bin/phpunit --coverage-html ./cover-html"
+      "./vendor/bin/phpunit -c ./phpunit.xml.dist --coverage-text"
     ],
     "fix": [
       "./vendor/bin/php-cs-fixer fix $1"
