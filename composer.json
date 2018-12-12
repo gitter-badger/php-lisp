@@ -29,8 +29,8 @@
     }
   },
   "scripts": {
-    "test": [
-      "./vendor/bin/phpunit"
+    "test-html": [
+      "./vendor/bin/phpunit --coverage-html ./cover-html"
     ],
     "fix": [
       "./vendor/bin/php-cs-fixer fix $1"

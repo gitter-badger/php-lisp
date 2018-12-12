@@ -17,7 +17,7 @@ install:
 script:
 - ./vendor/bin/phplint
 - ./vendor/bin/php-cs-fixer fix $1
-- vendor/bin/phpunit --coverage-text
+- ./vendor/bin/phpunit --coverage-text
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
