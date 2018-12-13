@@ -51,16 +51,16 @@ class ProgramTest extends TestCase
 
     public function testFromFile()
     {
-        $program = Psp::load(__DIR__.'/fixtures/sample.lisphp');
-        $this->assertSame(3, count($program));
+        $program = Psp::load(__DIR__.'/fixtures/sample.psp');
+        $this->assertEquals(3, count($program));
         try {
-            Psp::load($f = __DIR__.'/fixtures/sample2.lisphp');
+            Psp::load($f = __DIR__.'/fixtures/exception/sample_error.psp');
             $this->fail();
         } catch (ParsingException $e) {
-            $this->assertSame(file_get_contents($f), $e->code);
-            $this->assertSame($f, $e->getLisphpFile());
-            $this->assertSame(2, $e->getLisphpLine());
-            $this->assertSame(32, $e->getLisphpColumn());
+            $this->assertEquals(file_get_contents($f), $e->code);
+            $this->assertEquals($f, $e->getLisphpFile());
+            $this->assertEquals(2, $e->getLisphpLine());
+            $this->assertEquals(41, $e->getLisphpColumn());
         }
     }
 

@@ -35,8 +35,8 @@ function PSP_usage() {
 function PSP_printParsingError(\PhpLisp\Psp\Exceptions\ParsingException $e) {
     echo $e->getMessage(), "\n";
     $lines = explode("\n", $e->code);
-    echo $lines[$e->getPSPLine() - 1], "\n";
-    echo str_repeat(' ', $e->getPSPColumn() - 1), "^\n";
+    echo $lines[$e->getLisphpLine() - 1], "\n";
+    echo str_repeat(' ', $e->getLisphpColumn() - 1), "^\n";
 }
 
 $options = getopt('hvsc:');

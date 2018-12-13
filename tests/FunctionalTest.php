@@ -25,7 +25,6 @@ class FunctionalTest extends TestCase
     public function testFromFile()
     {
         $testFiles = glob(__DIR__ . '/fixtures/*.psp');
-
         foreach ($testFiles as $file) {
             $this->result = '';
 
